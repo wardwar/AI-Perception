@@ -19,7 +19,7 @@
 	<table border="1">
 		<tr>
 			<td>W1</td>
-			<td><input type="text" name="w1"></td>
+			<td><input type="text" name="w1" value="<?=rand(-0.5,0.5)?>"></td>
 		</tr>
 		<tr>
 			<td>W2</td>
@@ -84,6 +84,7 @@
 			} else {
 				$target = array(0,1,1,0);
 			}
+	
 
 		do{
 			// table
@@ -104,11 +105,12 @@
 			<?php
 
 			// pengulangan mencari target
-		for ($i=0; $i <= 3 ; $i++) { 
-
+		for ($i=0; $i <= 3 ; $i++) {
+			$iterasi = $i;
+		do{
 			// menghitung nilai n
-			$pw1 = ($p1[$i]*1)*($w1[$i]*1);
-			$pw2 = ($p2[$i]*1)*($w2[$i]*1);
+			$pw1 = ($p1[$i]*1)*($w1[$iterasi]*1);
+			$pw2 = ($p2[$i]*1)*($w2[$iterasi]*1);
 			$n[$i] = $pw1 + $pw2 - $treshold;
 
 			// menentukan nilai a
@@ -126,10 +128,14 @@
 			$dw1[$i] = $lr * $p1[$i] * $e[$i];
 			$dw2[$i] = $lr * $p2[$i] * $e[$i];
 
-			$w1[$i+1] = $w1[$i] + $dw1[$i];
-			$w2[$i+1] = $w2[$i] + $dw2[$i];
+			$w1[$iterasi+1] = $w1[$iterasi] + $dw1[$i];
+			$w2[$iterasi+1] = $w2[$iterasi] + $dw2[$i];
 
-
+		$iterasi++;
+		if($a[$i] == $target[$i]) {
+			break;
+		}
+		}while($a != $target);
 			?>
 			<tr>
 						<td><?=$p1[$i]?></td>
@@ -144,7 +150,8 @@
 						<td><?=$w2[$i+1]?></td>
 					</tr>
 				
-		<?php		
+		<?php
+					
 
 	}	
 	echo '</table>';
