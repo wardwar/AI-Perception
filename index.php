@@ -1,59 +1,115 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+	<meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 	<title>Tugas AI Perception</title>
+
+	<link href="bootstrap.min.css" rel="stylesheet">
 </head>
 <style type="text/css">
-	table {
-		border-collapse: collapse;
-		margin: 10px;
+	body {
+		
 	}
+
 
 	td,th {
 		padding: 5px;
 	}
+
+	
+	.form {
+		background: #D2D7D3;
+		height: 500px;
+
+	}
+	.tombol {
+		background: #eee;
+	}
 </style>
 <body>
-
-<form action="" method="post" name="inisiasi">
-	<table border="1">
+<center>
+	<div class="form">
+<form action="" method="post" role="form">
+<div class="col-md-6">
+<h2>Input Bobot dan bias</h2>
+	<table class="table table-bordered" id="input">
 		<tr>
 			<td>W1</td>
-			<td><input type="text" name="w1" value="<?=rand(-0.5,0.5)?>"></td>
+			<td><input class="form-control" type="text" name="w1" value="<?=number_format(-0.5+lcg_value()*(abs(-0.5-0.5)),1)?>"></td>
 		</tr>
 		<tr>
 			<td>W2</td>
-			<td><input type="text" name="w2"></td>
+			<td><input class="form-control" type="text" name="w2" value="<?=number_format(-0.5+lcg_value()*(abs(-0.5-0.5)),1)?>"></td>
 		</tr>
 		<tr>
 			<td>Treshold</td>
-			<td><input type="text" name="treshold"></td>
+			<td><input class="form-control" type="text" name="treshold"></td>
 		</tr>
 		<tr>
 			<td>n</td>
-			<td><input type="text" name="lr"></td>
+			<td><input class="form-control" type="text" name="lr"></td>
 		</tr>
 
 	</table>
+	</div>
+	
+	<div class="col-md-6">
+	<h2>Pilih Fungsi Logika</h2>
+	<table class="table table-bordered" id="fungsi">
 
-	<table border="1">
 		<tr>
-			<td><input type="radio" name="fungsi" id="and" value="and"><label for="and">AND</label></td>
+			<td>
+			<div class="radio">
+			  <label>
+			    <input type="radio" name="fungsi" id="optionsRadios1" value="and">
+				AND
+			  </label>
+			</div>
+			</td>
 		</tr>
 		<tr>
-			<td><input type="radio" name="fungsi" id="or" value="or"><label for="and">OR</label></td>
+			<td>
+				<div class="radio">
+			  <label>
+			    <input type="radio" name="fungsi" id="optionsRadios1" value="or">
+				OR
+			  </label>
+			</div>
+			</td>
 		</tr>
 		<tr>
-			<td><input type="radio" name="fungsi" id="xor" value="xor"><label for="xor">XOR</label></td>
+			<td>
+				<div class="radio">
+			  <label>
+			    <input type="radio" name="fungsi" id="optionsRadios1" value="xor">
+				XOR
+			  </label>
+			</div>
+			</td>
 		</tr>
 		<tr>
-			<td><input type="radio" name="fungsi" id="xnor" value="xnor"><label for="xnor">XNOR</label></td>
+			<td>
+				<div class="radio">
+			  <label>
+			    <input type="radio" name="fungsi" id="optionsRadios1" value="xnor">
+				XNOR
+			  </label>
+			</div>
+			</td>
 		</tr>
 	</table>
-
-	<input type="submit" value="Uji">
+	
+	</div>
+	<div class="col-md-12">
+	<button class="btn btn-large btn-success">Uji</button>
+	</div>
 
 </form>
+
+</div>
+</center>
 
 <?php
 	if (isset($_POST['w1'],$_POST['w2'],$_POST['treshold'],$_POST['lr'],$_POST['fungsi'])) {
@@ -81,15 +137,18 @@
 				$target = array(0,1,1,1);
 			} elseif ($fungsi == 'xnor') {
 				$target = array(1,0,0,1);
-			} else {
+			} elseif($fungsi == 'xor') {
 				$target = array(0,1,1,0);
 			}
-	
 
-		do{
+
+
 			// table
 			?>
-				<table border="1">
+			<div class="container-fluid">
+				
+			<h2>Hasil Learning</h2>
+				<table class="table table-bordered">
 					<tr>
 						<th>p1</th>
 						<th>p2</td>
@@ -132,12 +191,11 @@
 			$w2[$iterasi+1] = $w2[$iterasi] + $dw2[$i];
 
 		$iterasi++;
+
+
 		if($a[$i] == $target[$i]) {
-			break;
-		}
-		}while($a != $target);
 			?>
-			<tr>
+			<tr >
 						<td><?=$p1[$i]?></td>
 						<td><?=$p2[$i]?></td>
 						<td><?=$target[$i]?></td>
@@ -151,11 +209,30 @@
 					</tr>
 				
 		<?php
+			break;
+		} else {
+			?>
+			<tr bgcolor="#E08283">
+						<td><?=$p1[$i]?></td>
+						<td><?=$p2[$i]?></td>
+						<td bgcolor="#D64541"><?=$target[$i]?></td>
+						<td><?=$n[$i]?></td>
+						<td bgcolor="#D64541"><?=$a[$i]?></td>
+						<td><?=$dw1[$i]?></td>
+						<td><?=$dw2[$i]?></td>
+						<td><?=$e[$i]?></td>
+						<td><?=$w1[$i]?></td>
+						<td><?=$w2[$i+1]?></td>
+					</tr>
+				
+		<?php
+		}
+		}while($a != $target);
+			
 					
 
 	}	
-	echo '</table>';
-}while ($a != $target);
+	echo '</table></div>';
 
 		} else {
 			echo "Isi Yang lengkap";
