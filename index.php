@@ -168,8 +168,8 @@
 			$iterasi = $i;
 		do{
 			// menghitung nilai n
-			$pw1 = ($p1[$i]*1)*($w1[$iterasi]*1);
-			$pw2 = ($p2[$i]*1)*($w2[$iterasi]*1);
+			$pw1 = ($p1[$i])*($w1[$iterasi]);
+			$pw2 = ($p2[$i])*($w2[$iterasi]);
 			$n[$i] = $pw1 + $pw2 - $treshold;
 
 			// menentukan nilai a
